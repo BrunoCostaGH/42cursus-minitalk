@@ -45,3 +45,5 @@ SOFTWARE.
 ![issues](https://flat.badgen.net/github/issues/BrunoCostaGH/42cursus-minitalk)
 ![commits](https://flat.badgen.net/github/commits/BrunoCostaGH/42cursus-minitalk/master)
 ![license](https://flat.badgen.net/github/license/BrunoCostaGH/42cursus-minitalk)
+
+[![Libft](https://flat.badgen.net/badge/swift/v1.0.0/blue?label=libft)](https://github.com/BrunoCostaGH/42cursus-libft)
