@@ -1,0 +1,6 @@
+[submodule "libft42"]
+	path = libft42
+	url = git@github.com:BrunoCostaGH/42cursus-libft.git
+[submodule "libft"]
+	path = libft
+	url = git@github.com:BrunoCostaGH/42cursus-libft.git
