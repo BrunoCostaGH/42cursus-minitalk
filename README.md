@@ -15,6 +15,7 @@ On a Linux Terminal execute the server, followed by executing the client with th
 ## Credits
 
 Thanks to [Nuno](https://github.com/Kuninoto) a fellow 42 student.
+
 Thanks to Bamdeb Ghosh for this signal handlers [article](https://linuxhint.com/signal_handlers_c_programming_language/).
 
 ## License
