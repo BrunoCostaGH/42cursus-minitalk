@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 13:06:02 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/03/15 19:20:21 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/04/14 13:17:11 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	set_handler(void)
 
 	sa.sa_handler = &handler;
 	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 }
