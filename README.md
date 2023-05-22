@@ -9,7 +9,7 @@ On a Linux Terminal execute the server, followed by executing the client with th
 
 ```unix
   ./server
-  ./client [server_PID] [message_to_transmit]
+  ./client <server_PID> <message_to_transmit>
 ```
 
 ## Credits
