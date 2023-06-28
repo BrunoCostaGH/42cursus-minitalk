@@ -1,11 +1,11 @@
-# 42cursus-minitalk ([Subject](https://cdn.intra.42.fr/pdf/pdf/57707/en.subject.pdf))
+# 42cursus-minitalk ([Subject](https://github.com/BrunoCostaGH/42cursus-minitalk/blob/master/.github/en.subject.pdf))
 
 ## Description
 The purpose of this project is to code a small data exchange program using UNIX signals. It is an introductory project for the bigger UNIX projects that will appear later on in the cursus.
 
 ## Usage
 
-On a Linux Terminal execute the server, followed by executing the client with the pid provided by server and the message to send to server.
+On a Linux Terminal execute the server, followed by executing the client with the pid provided by the server and the message to send to the server.
 
 ```unix
   ./server
@@ -16,7 +16,7 @@ On a Linux Terminal execute the server, followed by executing the client with th
 
 Thanks to [Nuno](https://github.com/Kuninoto) a fellow 42 student.
 
-Thanks to Bamdeb Ghosh for this signal handlers [article](https://linuxhint.com/signal_handlers_c_programming_language/).
+Thanks to Bamdeb Ghosh for this signal handler [article](https://linuxhint.com/signal_handlers_c_programming_language/).
 
 ## License
 
