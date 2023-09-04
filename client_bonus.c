@@ -6,17 +6,23 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 13:06:02 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/14 13:17:11 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:32:28 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_message(pid_t serverpid, char *message)
+static void	send_message(pid_t serverpid, char *message, bool has_signal)
 {
-	int		bits;
-	char	ch;
+	static bool	p_has_signal;
+	int			bits;
+	char		ch;
 
+	if (!serverpid && !message && has_signal)
+	{
+		p_has_signal = has_signal;
+		return ;
+	}
 	while (*message)
 	{
 		ch = *message;
@@ -27,21 +33,24 @@ void	send_message(pid_t serverpid, char *message)
 				kill(serverpid, SIGUSR1);
 			else
 				kill(serverpid, SIGUSR2);
-			usleep(100);
+			while (!p_has_signal)
+				;
+			p_has_signal = false;
 		}
 		message++;
 	}
 }
 
-void	handler(int signum)
+static void	handler(int signum)
 {
 	if (signum == SIGUSR1)
 		ft_printf("%s", "Received signal SIGUSR1\n");
 	else if (signum == SIGUSR2)
 		ft_printf("%s", "Received signal SIGUSR2\n");
+	send_message(0, 0, true);
 }
 
-void	set_handler(void)
+static void	set_handler(void)
 {
 	struct sigaction	sa;
 
@@ -65,9 +74,7 @@ int	main(int argc, char **argv)
 			exit(1);
 		}
 		set_handler();
-		send_message(serverpid, argv[2]);
-		while (1)
-			pause();
+		send_message(serverpid, argv[2], 0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:40:19 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/03/15 19:20:15 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:19:46 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft/libft.h"
 # include <signal.h>
+# include <stdbool.h>
 
 /*struct sigaction {
 	void	(*sa_handler)(int);

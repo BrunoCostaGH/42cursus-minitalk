@@ -6,17 +6,23 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:45:03 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/03/15 19:20:07 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:35:13 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_message(pid_t serverpid, char *message)
+static void	send_message(pid_t serverpid, char *message, bool has_signal)
 {
-	int		bits;
-	char	ch;
+	static bool	p_has_signal;
+	int			bits;
+	char		ch;
 
+	if (!serverpid && !message && has_signal)
+	{
+		p_has_signal = has_signal;
+		return ;
+	}
 	while (*message)
 	{
 		ch = *message;
@@ -27,10 +33,29 @@ void	send_message(pid_t serverpid, char *message)
 				kill(serverpid, SIGUSR1);
 			else
 				kill(serverpid, SIGUSR2);
-			usleep(100);
+			while (!p_has_signal)
+				;
+			p_has_signal = false;
 		}
 		message++;
 	}
+}
+
+static void	handler(int signum)
+{
+	(void)signum;
+	send_message(0, 0, true);
+}
+
+static void	set_handler(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = &handler;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 }
 
 int	main(int argc, char **argv)
@@ -45,7 +70,8 @@ int	main(int argc, char **argv)
 			ft_printf("%s", "Server is not started!\n");
 			exit(1);
 		}
-		send_message(serverpid, argv[2]);
+		set_handler();
+		send_message(serverpid, argv[2], 0);
 	}
 	return (0);
 }

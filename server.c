@@ -6,27 +6,29 @@
 /*   By: bsilva-c <bsilva-c@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:32:01 by bsilva-c          #+#    #+#             */
-/*   Updated: 2023/04/14 13:17:34 by bsilva-c         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:36:47 by bsilva-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-/*void	print_bits(char ch)
+static void	clear_static_var(char *ch, int *bits, int *pid)
 {
-	int i;
+	*ch = 0;
+	*bits = 0;
+	*pid = 0;
+}
 
-	for (i = 0; i < 8; i++) {
-		ft_printf("%d", !!((ch << i) & 0x80));
-	}
-	ft_printf("\n");
-}*/
-
-void	handler(int sig)
+static void	action(int sig, siginfo_t *info, void *context)
 {
 	static char	ch;
 	static int	bits;
+	static int	pid;
 
+	if (pid && pid != info->si_pid)
+		clear_static_var(&ch, &bits, &pid);
+	pid = info->si_pid;
+	(void)context;
 	if (!ch)
 		ch = 0;
 	if (!bits)
@@ -39,17 +41,17 @@ void	handler(int sig)
 	if (bits == 8)
 	{
 		write(1, &ch, 1);
-		ch = 0;
-		bits = 0;
+		clear_static_var(&ch, &bits, &pid);
 	}
+	kill(info->si_pid, sig);
 }
 
-void	set_handler(void)
+static void	set_sigaction(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = &handler;
-	sa.sa_flags = 0;
+	sa.sa_sigaction = &action;
+	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
@@ -61,7 +63,7 @@ int	main(void)
 
 	serverpid = getpid();
 	ft_printf("Server PID: %d\n", serverpid);
-	set_handler();
+	set_sigaction();
 	while (1)
 		pause();
 	return (0);
